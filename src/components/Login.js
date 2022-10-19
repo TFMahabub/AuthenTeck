@@ -1,4 +1,38 @@
+import { useContext, useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "./UserContext"
+
 const Login = () => {
+  const {loginUser, user} = useContext(AuthContext);
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const from = location.state?.from?.pathname || "/";
+
+  const hansleSubmit = e => {
+    e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    //login-
+    loginUser(email, password)
+    .then(result => {
+      console.log(result.user);
+      form.reset()
+      navigate(from, { replace: true })
+    })
+    .catch(error => console.error(error))
+  }
+
+  
+  // useEffect(()=>{
+  //   if(user){
+  //     navigate(from, { replace: true })
+  //   }
+  // },[user])
+
   return (
     <div className='flex justify-center items-center pt-8'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -10,7 +44,7 @@ const Login = () => {
         </div>
         <form
           noValidate=''
-          action=''
+          onSubmit={hansleSubmit}
           className='space-y-6 ng-untouched ng-pristine ng-valid'
         >
           <div className='space-y-4'>

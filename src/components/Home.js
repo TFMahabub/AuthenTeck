@@ -1,4 +1,11 @@
+import { useContext } from "react"
+import { Link } from "react-router-dom"
+import { AuthContext } from "./UserContext"
+
 const Home = () => {
+
+  const {user} = useContext(AuthContext)
+
   return (
     <section>
       <div className=''>
@@ -10,27 +17,31 @@ const Home = () => {
             Here, an user can authenticate using google or create an account
             using email password. Powered by Firebase.!
           </p>
-          <div className='flex flex-wrap justify-center'>
-            <button
-              type='button'
+          <div className={user?.uid || 'flex flex-wrap justify-center'}>
+            <Link
+              to={'/profile'}
               className='px-8 py-3 m-2 text-lg font-semibold rounded bg-gray-800 hover:bg-gray-700 text-gray-50'
             >
               Visit Profile
-            </button>
-
-            <button
-              type='button'
+            </Link>
+            {
+              !user?.uid &&
+              <>
+            <Link
+              to={'/login'}
               className='px-8 py-3 m-2 text-lg font-semibold rounded bg-gray-800 hover:bg-gray-700 text-gray-50'
             >
               Login
-            </button>
+            </Link>
 
-            <button
-              type='button'
+            <Link
+              to={'/register'}
               className='px-8 py-3 m-2 text-lg border rounded border-gray-700 text-gray-900'
             >
               Register
-            </button>
+            </Link>           
+              </>
+            }
           </div>
         </div>
       </div>

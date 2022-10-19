@@ -1,6 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from './UserContext';
 
 const Register = () => {
+  const {createUser} = useContext(AuthContext)
+
+
+
+
+  const handleOnSubmit = e =>{
+    e.preventDefault();
+
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(name, email, password);
+
+    createUser(email, password)
+    .then(result => {
+      console.log(result.user);
+      form.reset()
+    })
+    .catch(error => console.error(error))
+  }
   return (
     <div className='flex justify-center items-center pt-8'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -10,7 +32,7 @@ const Register = () => {
         </div>
         <form
           noValidate=''
-          action=''
+          onSubmit={handleOnSubmit}
           className='space-y-12 ng-untouched ng-pristine ng-valid'
         >
           <div className='space-y-4'>
